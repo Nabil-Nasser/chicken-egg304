@@ -120,7 +120,7 @@ public class AnimGLEventListener4 extends AnimListener {
         }
 
         drawScore(gl, gld, score);
-        checkEggCaught();
+        checkEggTouch();
     }
 
     public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
@@ -200,19 +200,21 @@ public class AnimGLEventListener4 extends AnimListener {
         gl.glEnable(GL.GL_TEXTURE_2D);
     }
 
-    public void checkEggCaught() {
-        double basketLeft = x;                    // basket X
-        double basketRight = x + 10;             // basket width
-        double basketY = 1;                       // basket Y
+    public void checkEggTouch() {
+        double basketLeft = x;
+        double basketRight = x + 10;       // basket width
+        double basketTop = 1 + 2.25;       // basket top Y
 
         for (int i = 0; i < eggs.size(); i++) {
             Egg e = eggs.get(i);
             if (!e.active) continue;
 
-            // Check if egg reaches basket level and is inside basket horizontally
-            if (e.y <= basketY + 1 && e.x >= basketLeft && e.x <= basketRight) {
-                score++;        // increase score
-                e.active = false; // remove egg
+            // Calculate egg's bottom visually (account for -40 offset and scale)
+            double eggBottom = e.y - 40 - (0.5f * 0.1); // match DrawSprite offset
+
+            if (eggBottom <= basketTop && e.x >= basketLeft && e.x <= basketRight) {
+                score++;
+                e.active = false;
             }
         }
     }
