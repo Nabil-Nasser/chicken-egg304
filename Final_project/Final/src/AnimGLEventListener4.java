@@ -60,7 +60,7 @@ public class AnimGLEventListener4 extends AnimListener {
     public void init(GLAutoDrawable gld) {
 
         GL gl = gld.getGL();
-        gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);    //This Will Clear The Background Color To Black
+        gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);    
 
         gl.glEnable(GL.GL_TEXTURE_2D);  // Enable Texture Mapping
         gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
@@ -90,7 +90,7 @@ public class AnimGLEventListener4 extends AnimListener {
     public void display(GLAutoDrawable gld) {
 
         GL gl = gld.getGL();
-        gl.glClear(GL.GL_COLOR_BUFFER_BIT);       //Clear The Screen And The Depth Buffer
+        gl.glClear(GL.GL_COLOR_BUFFER_BIT);       
         gl.glLoadIdentity();
 
         DrawBackground(gl);
@@ -131,7 +131,7 @@ public class AnimGLEventListener4 extends AnimListener {
 
     public void DrawSprite(GL gl,double x, double y, int index, float scale){
         gl.glEnable(GL.GL_BLEND);
-        gl.glBindTexture(GL.GL_TEXTURE_2D, textures[index]);	// Turn Blending On
+        gl.glBindTexture(GL.GL_TEXTURE_2D, textures[index]);	
 
         gl.glPushMatrix();
         gl.glTranslated( x/(maxWidth/2.0) - 0.9, y/(maxHeight/2.0) - 0.9, 0);
@@ -176,28 +176,16 @@ public class AnimGLEventListener4 extends AnimListener {
     }
 
 
-    public void drawScore(GL gl, GLAutoDrawable gld, int score) {
+   public void drawScore(GL gl, GLAutoDrawable gld, int score) {
 
-        GLCanvas glc = (GLCanvas) gld; // cast drawable to canvas
-
-        // Save previous OpenGL states
-        gl.glPushAttrib(GL.GL_ENABLE_BIT | GL.GL_CURRENT_BIT);
-
-        // Disable states that conflict with TextRenderer
-        gl.glDisable(GL.GL_TEXTURE_2D);
-        gl.glDisable(GL.GL_LIGHTING);
-        gl.glDisable(GL.GL_BLEND);
+        GLCanvas glc = (GLCanvas) gld; 
 
         // Draw text
         scoreRenderer.beginRendering(glc.getWidth(), glc.getHeight());
         scoreRenderer.setColor(1f, 1f, 1f, 1f);  // white text
         scoreRenderer.draw("Score : " + score, 20, glc.getHeight() - 40);
         scoreRenderer.endRendering();
-
-        // Restore GL state
-        gl.glPopAttrib();
-
-        gl.glEnable(GL.GL_TEXTURE_2D);
+        
     }
 
     public void checkEggTouch() {
@@ -265,3 +253,4 @@ public class AnimGLEventListener4 extends AnimListener {
         return keyBits.get(keyCode);
     }
 }
+
