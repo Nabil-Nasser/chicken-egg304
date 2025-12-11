@@ -1,12 +1,3 @@
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-
-
 import Texture.TextureReader;
 import java.awt.event.*;
 import java.io.IOException;
@@ -29,7 +20,7 @@ public class AnimGLEventListener4 extends AnimListener {
     TextRenderer scoreRenderer = new TextRenderer(new Font("Arial", Font.BOLD, 22));
 
 
-    double[] eggStartX = { 12, 32, 52, 72, 92 };
+    double[] eggStartX = { 15, 35, 55, 78, 100 };
     double eggStartY = 95;
 
     ArrayList<Egg> eggs = new ArrayList<>();
@@ -62,7 +53,7 @@ public class AnimGLEventListener4 extends AnimListener {
         GL gl = gld.getGL();
         gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);    
 
-        gl.glEnable(GL.GL_TEXTURE_2D);  // Enable Texture Mapping
+        gl.glEnable(GL.GL_TEXTURE_2D); 
         gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
         gl.glGenTextures(textureNames.length, textures, 0);
 
@@ -71,15 +62,8 @@ public class AnimGLEventListener4 extends AnimListener {
                 texture[i] = TextureReader.readTexture(assetsFolderName + "//" + textureNames[i] , true);
                 gl.glBindTexture(GL.GL_TEXTURE_2D, textures[i]);
 
-//                mipmapsFromPNG(gl, new GLU(), texture[i]);
-                new GLU().gluBuild2DMipmaps(
-                        GL.GL_TEXTURE_2D,
-                        GL.GL_RGBA, // Internal Texel Format,
-                        texture[i].getWidth(), texture[i].getHeight(),
-                        GL.GL_RGBA, // External format from image,
-                        GL.GL_UNSIGNED_BYTE,
-                        texture[i].getPixels() // Imagedata
-                );
+                new GLU().gluBuild2DMipmaps( GL.GL_TEXTURE_2D, GL.GL_RGBA, texture[i].getWidth(), texture[i].getHeight(), GL.GL_RGBA, GL.GL_UNSIGNED_BYTE, texture[i].getPixels() );
+                
             } catch( IOException e ) {
                 System.out.println(e);
                 e.printStackTrace();
@@ -116,7 +100,7 @@ public class AnimGLEventListener4 extends AnimListener {
             }
 
             e.update();
-            DrawSprite(gl, (e.x)-10, (e.y)-40, 1, 0.5f); // egg = index 1
+            DrawSprite(gl, (e.x)-10, (e.y)-40, 1, 0.5f); 
         }
 
         drawScore(gl, gld, score);
@@ -136,9 +120,8 @@ public class AnimGLEventListener4 extends AnimListener {
         gl.glPushMatrix();
         gl.glTranslated( x/(maxWidth/2.0) - 0.9, y/(maxHeight/2.0) - 0.9, 0);
         gl.glScaled(0.1*scale, 0.1*scale, 1);
-//        gl.glRotated(angle,0,0,1);
-        //System.out.println(x +" " + y);
         gl.glBegin(GL.GL_QUADS);
+        
         // Front Face
         gl.glTexCoord2f(0.0f, 0.0f);
         gl.glVertex3f(-1.0f, -1.0f, -1.0f);
@@ -156,7 +139,7 @@ public class AnimGLEventListener4 extends AnimListener {
 
     public void DrawBackground(GL gl){
         gl.glEnable(GL.GL_BLEND);
-        gl.glBindTexture(GL.GL_TEXTURE_2D, textures[2]);	// Turn Blending On
+        gl.glBindTexture(GL.GL_TEXTURE_2D, textures[2]);
 
         gl.glPushMatrix();
         gl.glBegin(GL.GL_QUADS);
@@ -179,10 +162,8 @@ public class AnimGLEventListener4 extends AnimListener {
    public void drawScore(GL gl, GLAutoDrawable gld, int score) {
 
         GLCanvas glc = (GLCanvas) gld; 
-
-        // Draw text
         scoreRenderer.beginRendering(glc.getWidth(), glc.getHeight());
-        scoreRenderer.setColor(1f, 1f, 1f, 1f);  // white text
+        scoreRenderer.setColor(1f, 1f, 1f, 1f);
         scoreRenderer.draw("Score : " + score, 20, glc.getHeight() - 40);
         scoreRenderer.endRendering();
         
@@ -191,14 +172,13 @@ public class AnimGLEventListener4 extends AnimListener {
     public void checkEggTouch() {
         double basketLeft = x;
         double basketRight = x + 10;       // basket width
-        double basketTop = 1 + 2.25;       // basket top Y
+        double basketTop = 1 + 2.25;       // basket top
 
         for (int i = 0; i < eggs.size(); i++) {
             Egg e = eggs.get(i);
             if (!e.active) continue;
 
-            // Calculate egg's bottom visually (account for -40 offset and scale)
-            double eggBottom = e.y - 40 - (0.5f * 0.1); // match DrawSprite offset
+            double eggBottom = e.y - 40 - (0.5f * 0.1); 
 
             if (eggBottom <= basketTop && e.x >= basketLeft && e.x <= basketRight) {
                 score++;
@@ -206,12 +186,6 @@ public class AnimGLEventListener4 extends AnimListener {
             }
         }
     }
-
-
-
-    /*
-     * KeyListener
-     */
 
     public void handleKeyPress() {
 
@@ -253,4 +227,5 @@ public class AnimGLEventListener4 extends AnimListener {
         return keyBits.get(keyCode);
     }
 }
+
 
